@@ -53,7 +53,7 @@ def latestepisodes():
 @plugin.cached_route('/programs/')
 def programs():
   items = []
-  html = _htmlify("http://moontv.fi/ohjelmat/")
+  html = _htmlify(PROGRAMS_URL)
   programlist = html.find('ul', { 'id':'ohjelmat-list' } )
   programs = programlist.findAll('li')
   for program in programs:
@@ -92,7 +92,7 @@ def program(url):
   return items
 
 
-@plugin.cached_route('/')
+@plugin.route('/')
 def index():
     latest_episodes = {
         'label': 'Latest Episodes',
