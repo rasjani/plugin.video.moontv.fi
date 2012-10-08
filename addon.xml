@@ -2,16 +2,20 @@
 <addon id="plugin.video.moontv.fi" name="MoonTV.fi" version="0.1" provider-name="Jani (rasjani) Mikkonen">
   <requires>
     <import addon="xbmc.python" version="2.0"/>
-    <import addon="script.module.xbmcswift2" version="1.1.1"/>
-    <import addon="script.module.beautifulsoup" version="3.0.8" />
+    <import addon="script.module.xbmcswift2" version="1.2.0"/>
+    <import addon="script.module.beautifulsoup" version="3.2.0" />
   </requires>
   <extension point="xbmc.python.pluginsource" library="addon.py">
     <provides>video</provides>
   </extension>
   <extension point="xbmc.addon.metadata">
     <platform>all</platform>
-    <language></language>
-    <summary>Summary for MoonTV.fi</summary>
-    <description>Description for MoonTV.fi</description>
+    <language>fi</language>
+    <summary>Finnish Net-TV Channel MoonTV</summary>
+    <description>Finnish Net-TV Channel MoonTV</description>
+    <summary lang="fi">Suomalainen netti tv kanava MoonTV</summary>
+    <description lang="fi">Suomalainen netti tv kanava MoonTV</description>
+    <summary lang="en">Finnish Net-TV Channel MoonTV</summary>
+    <description lang="en">Finnish Net-TV Channel MoonTV</description>
   </extension>
 </addon>
