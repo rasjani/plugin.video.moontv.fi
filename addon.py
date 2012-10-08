@@ -95,11 +95,11 @@ def program(url):
 @plugin.route('/')
 def index():
     latest_episodes = {
-        'label': 'Latest Episodes',
+        'label': plugin.get_string(30001),
         'path': plugin.url_for('latestepisodes')
     }
     programs = {
-        'label': 'Programs',
+        'label': plugin.get_string(30002),
         'path': plugin.url_for('programs')
     }
     return [latest_episodes, programs]
