@@ -27,7 +27,11 @@ PROGRAMS_URL_FMT='http://moontv.fi/ohjelmat{0}'
 def _htmlify(url):
   return BS(download_page(url))
 
+## @plugin.cached(TTL=120)
+## If i enable cache here, i get 
 def _gen_item_from_episodepage(url):
+  plugin.log.error("_gen_item_from_episodepage:")
+  plugin.log.error(url)
   programhtml = _htmlify(url)
 
   episode_plot = programhtml.find('meta', { 'property':'og:description'})['content']
@@ -40,6 +44,7 @@ def _gen_item_from_episodepage(url):
 
 @plugin.route('/latestepisodes/')
 def latestepisodes():
+  plugin.log.error("latestepisodes")
   items = []
   html = _htmlify(BASE_URL)
   latest = html.find('div',{ 'class' : 'thumbnails'} )
@@ -47,6 +52,7 @@ def latestepisodes():
 
   for episode in episodes:
       episodepage = episode.h6.a['href']
+      plugin.log.error(episodepage)
       item = _gen_item_from_episodepage(episodepage) 
       items.append(item)
  
@@ -54,6 +60,7 @@ def latestepisodes():
 
 @plugin.route('/programs/')
 def programs():
+  plugin.log.error("programs")
   items = []
   html = _htmlify("http://moontv.fi/ohjelmat/")
   programlist = html.find('ul', { 'id':'ohjelmat-list' } )
@@ -76,6 +83,7 @@ def programs():
 
 @plugin.route('/program/<url>/')
 def program(url):
+  plugin.log.error("program")
   items = []
   html = _htmlify(url)
   
@@ -96,6 +104,7 @@ def program(url):
 
 @plugin.route('/')
 def index():
+    plugin.log.error("index")
     latest_episodes = {
         'label': 'Latest Episodes',
         'path': plugin.url_for('latestepisodes')
