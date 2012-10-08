@@ -23,51 +23,38 @@ PROGRAMS_URL='http://moontv.fi/ohjelmat/'
 BASE_URL_FMT='http://moontv.fi{0}'
 PROGRAMS_URL_FMT='http://moontv.fi/ohjelmat{0}'
 
-## @plugin.cached(TTL=120)
 ## If i enable cache here, i get 
 def _htmlify(url):
-  return download_page(url)
+  return BS(download_page(url))
 
-## @plugin.cached(TTL=120)
-## If i enable cache here, i get 
 def _gen_item_from_episodepage(url):
-  plugin.log.error("_gen_item_from_episodepage:")
-  plugin.log.error(url)
   programhtml = _htmlify(url)
-  programhtmlbs = BS(programhtml)
 
-  episode_plot = programhtmlbs.find('meta', { 'property':'og:description'})['content']
-  episode_image = programhtmlbs.find('meta', { 'property':'og:image'})['content']
-  episode_title = programhtmlbs.find('meta', { 'property':'og:title'})['content']
-  episode_url = parse_qs(urlparse(programhtmlbs.find('meta', { 'property':'og:video'})['content']).query)['file'][0]
-
+  episode_plot = programhtml.find('meta', { 'property':'og:description'})['content']
+  episode_image = programhtml.find('meta', { 'property':'og:image'})['content']
+  episode_title = programhtml.find('meta', { 'property':'og:title'})['content']
+  episode_url = parse_qs(urlparse(programhtml.find('meta', { 'property':'og:video'})['content']).query)['file'][0]
   return { 'label' : episode_title, 'thumbnail' : episode_image, 'path' : episode_url, 'is_playable' : True, 'info': { 'plot':episode_plot } }
-  
 
-@plugin.route('/latestepisodes/')
+@plugin.cached_route('/latestepisodes/')
 def latestepisodes():
-  plugin.log.error("latestepisodes")
   items = []
   html = _htmlify(BASE_URL)
-  htmlbs = BS(html)
-  latest = htmlbs.find('div',{ 'class' : 'thumbnails'} )
+  latest = html.find('div',{ 'class' : 'thumbnails'} )
   episodes = latest.findAll('div')
 
   for episode in episodes:
       episodepage = episode.h6.a['href']
-      plugin.log.error(episodepage)
       item = _gen_item_from_episodepage(episodepage) 
       items.append(item)
  
   return items
 
-@plugin.route('/programs/')
+@plugin.cached_route('/programs/')
 def programs():
-  plugin.log.error("programs")
   items = []
   html = _htmlify("http://moontv.fi/ohjelmat/")
-  htmlbs = BS(html)
-  programlist = htmlbs.find('ul', { 'id':'ohjelmat-list' } )
+  programlist = html.find('ul', { 'id':'ohjelmat-list' } )
   programs = programlist.findAll('li')
   for program in programs:
     program_url = BASE_URL_FMT.format(program.a['href'])
@@ -85,18 +72,16 @@ def programs():
 
   return items
 
-@plugin.route('/program/<url>/')
+@plugin.cached_route('/program/<url>/')
 def program(url):
-  plugin.log.error("program")
   items = []
   html = _htmlify(url)
-  htmlbs = BS(html)
   
-  latest_ep_url = htmlbs.find('meta', { 'property':'og:url'})['content']
+  latest_ep_url = html.find('meta', { 'property':'og:url'})['content']
   item = _gen_item_from_episodepage(latest_ep_url)
   items.append(item)
 
-  latest = htmlbs.find('div',{ 'class' : 'thumbnails'} )
+  latest = html.find('div',{ 'class' : 'thumbnails'} )
   episodes = latest.findAll('div')
 
   for episode in episodes:
@@ -107,9 +92,8 @@ def program(url):
   return items
 
 
-@plugin.route('/')
+@plugin.cached_route('/')
 def index():
-    plugin.log.error("index")
     latest_episodes = {
         'label': 'Latest Episodes',
         'path': plugin.url_for('latestepisodes')
