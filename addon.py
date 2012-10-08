@@ -16,7 +16,11 @@ from BeautifulSoup import BeautifulSoup as BS
 from urlparse import urlparse
 from urlparse import parse_qs
 
-plugin = Plugin()
+PLUGIN_NAME = 'MoonTV.fi'
+PLUGIN_ID = 'plugin.video.moontv.fi'
+plugin = Plugin(PLUGIN_NAME, PLUGIN_ID, __file__)
+
+
 
 BASE_URL='http://moontv.fi/'
 PROGRAMS_URL='http://moontv.fi/ohjelmat/'
@@ -24,7 +28,7 @@ BASE_URL_FMT='http://moontv.fi{0}'
 PROGRAMS_URL_FMT='http://moontv.fi/ohjelmat{0}'
 
 def _htmlify(url):
-  return BS(download_page(url))
+  return BS(download_page(url), convertEntities=BS.HTML_ENTITIES)
 
 def _gen_item_from_episodepage(url):
   programhtml = _htmlify(url)
@@ -93,15 +97,7 @@ def program(url):
 
 @plugin.route('/')
 def index():
-    latest_episodes = {
-        'label': plugin.get_string(30001),
-        'path': plugin.url_for('latestepisodes')
-    }
-    programs = {
-        'label': plugin.get_string(30002),
-        'path': plugin.url_for('programs')
-    }
-    return [latest_episodes, programs]
+    return [ { 'label': plugin.get_string(30001), 'path': plugin.url_for('latestepisodes') }, { 'label': plugin.get_string(30002), 'path': plugin.url_for('programs') } ]
 
 
 if __name__ == '__main__':
