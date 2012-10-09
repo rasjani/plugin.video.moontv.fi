@@ -23,7 +23,7 @@ TBD
 
 ### Contact
 
-Jani Mikkonen <jani.mikkonen@gmail.com>
-FREENODE IRC: jani
-rasjani on [http://forum.xbmc.org](http://forum.xbmc.org)
+* Jani Mikkonen <jani.mikkonen@gmail.com>
+* FREENODE IRC: jani
+* rasjani on [http://forum.xbmc.org](http://forum.xbmc.org)
 
