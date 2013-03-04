@@ -10,11 +10,8 @@ mkdir -p ./releases/tmp/plugin.video.moontv.fi/resources/lib
 
 cp ./addon.py ./releases/tmp/plugin.video.moontv.fi
 cp ./addon.xml ./releases/tmp/plugin.video.moontv.fi
-cp ./changelog.txt ./releases/tmp/plugin.video.moontv.fi
 cp ./fanart.png ./releases/tmp/plugin.video.moontv.fi
 cp ./icon.png ./releases/tmp/plugin.video.moontv.fi
-cp ./LICENSE.txt ./releases/tmp/plugin.video.moontv.fi
-cp ./README.md ./releases/tmp/plugin.video.moontv.fi
 cp ./resources/__init__.py ./releases/tmp/plugin.video.moontv.fi/resources/
 cp ./resources/language/English/strings.xml ./releases/tmp/plugin.video.moontv.fi/resources/language/English
 cp ./resources/language/Finnish/strings.xml ./releases/tmp/plugin.video.moontv.fi/resources/language/Finnish
