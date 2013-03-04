@@ -1,6 +1,6 @@
 #!/bin/sh
 # TODO: Add version from latest git tag
-VERSION=0.1
+VERSION=`cat addon.xml |grep "addon id"|awk '{print $4}'|tr -d '"'|awk -F= '{print $2}'`
 ROOT=`pwd`
 rm -rf ./releases/tmp/
 mkdir ./releases/${VERSION}
