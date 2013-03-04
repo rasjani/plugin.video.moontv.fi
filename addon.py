@@ -13,6 +13,7 @@
 from xbmcswift2 import Plugin
 from xbmcswift2 import download_page
 from BeautifulSoup import BeautifulSoup as BS
+from os.path import basename 
 from urlparse import urlparse
 from urlparse import parse_qs
 
@@ -25,6 +26,7 @@ plugin = Plugin(PLUGIN_NAME, PLUGIN_ID, __file__)
 BASE_URL='http://moontv.fi/'
 PROGRAMS_URL='http://moontv.fi/ohjelmat/'
 BASE_URL_FMT='http://moontv.fi{0}'
+MEDIA_URL_FMT='http://moontv.fi/media/{0}'
 PROGRAMS_URL_FMT='http://moontv.fi/ohjelmat{0}'
 
 def _htmlify(url):
@@ -36,8 +38,19 @@ def _gen_item_from_episodepage(url):
   episode_plot = programhtml.find('meta', { 'property':'og:description'})['content']
   episode_image = programhtml.find('meta', { 'property':'og:image'})['content']
   episode_title = programhtml.find('meta', { 'property':'og:title'})['content'].replace(" &raquo;",":")
-  episode_url = parse_qs(urlparse(programhtml.find('meta', { 'property':'og:video'})['content']).query)['file'][0]
+  episode_url = plugin.url_for('play_episode', filename = 
+    basename(parse_qs(urlparse(programhtml.find('meta',
+      {'property':'og:video'})['content']).query)['file'][0]) )
   return { 'label' : episode_title, 'thumbnail' : episode_image, 'path' : episode_url, 'is_playable' : True, 'info': { 'plot':episode_plot } }
+
+
+def videourl(filename):
+  return MEDIA_URL_FMT.format(filename)
+
+@plugin.route('/play_episode/<filename>')
+def play_episode(filename):
+  url = videourl(filename)
+  plugin.set_resolved_url(url)
 
 @plugin.cached_route('/latestepisodes/')
 def latestepisodes():
