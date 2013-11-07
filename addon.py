@@ -13,7 +13,7 @@
 from xbmcswift2 import Plugin
 from xbmcswift2 import download_page
 from BeautifulSoup import BeautifulSoup as BS
-from os.path import basename 
+from os.path import basename
 from urlparse import urlparse
 from urlparse import parse_qs
 
@@ -38,9 +38,10 @@ def _gen_item_from_episodepage(url):
   episode_plot = programhtml.find('meta', { 'property':'og:description'})['content']
   episode_image = programhtml.find('meta', { 'property':'og:image'})['content']
   episode_title = programhtml.find('meta', { 'property':'og:title'})['content'].replace(" &raquo;",":")
-  episode_url = plugin.url_for('play_episode', filename = 
-    basename(parse_qs(urlparse(programhtml.find('meta',
-      {'property':'og:video'})['content']).query)['file'][0]) )
+  #episode_url = plugin.url_for('play_episode', filename =
+  #  basename(parse_qs(urlparse(programhtml.find('meta',
+  #    {'property':'og:video'})['content']).query)['file'][0]) )
+  episode_url  = episode_image.replace('jpg','mp4')
   return { 'label' : episode_title, 'thumbnail' : episode_image, 'path' : episode_url, 'is_playable' : True, 'info': { 'plot':episode_plot } }
 
 
@@ -61,9 +62,9 @@ def latestepisodes():
 
   for episode in episodes:
       episodepage = episode.h6.a['href']
-      item = _gen_item_from_episodepage(episodepage) 
+      item = _gen_item_from_episodepage(episodepage)
       items.append(item)
- 
+
   return items
 
 @plugin.cached_route('/programs/')
@@ -83,8 +84,6 @@ def programs():
         'thumbnail' : program_image,
         'info': { 'plot':program_desc },
     })
-    
-
 
   return items
 
@@ -92,7 +91,7 @@ def programs():
 def program(url):
   items = []
   html = _htmlify(url)
-  
+
   latest_ep_url = html.find('meta', { 'property':'og:url'})['content']
   item = _gen_item_from_episodepage(latest_ep_url)
   items.append(item)
