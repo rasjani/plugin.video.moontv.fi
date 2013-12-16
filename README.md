@@ -1,6 +1,11 @@
 MoonTV.fi for XBMC
 ==================
 
+### Build Status
+
+[![Build Status](https://travis-ci.org/rasjani/xbmc-moontvfi.png?branch=master)](https://travis-ci.org/rasjani/xbmc-moontvfi)
+
+
 ### Summary
 
 Watch series from [Moon TV](http://moontv.fi) within 
