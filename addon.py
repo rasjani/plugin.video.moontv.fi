@@ -84,7 +84,7 @@ def _gen_item_from_episodepage(url):
     return None
 
 
-@plugin.route('/latestepisodes/')
+@plugin.cached_route('/latestepisodes/')
 def latestepisodes():
   items = []
   html = _htmlify(BASE_URL)
@@ -104,7 +104,7 @@ def latestepisodes():
 
   return items
 
-@plugin.route('/programs/')
+@plugin.cached_route('/programs/')
 def programs():
   items = []
   html = _htmlify(PROGRAMS_URL)
@@ -123,7 +123,7 @@ def programs():
 
   return items
 
-@plugin.route('/program/<url>/<page>')
+@plugin.cached_route('/program/<url>/<page>')
 def program(url,page):
   items = []
   page = int(page)
@@ -151,7 +151,7 @@ def program(url,page):
   return items
 
 
-@plugin.route('/')
+@plugin.cached_route('/')
 def index():
     return [ { 'label': plugin.get_string(30001), 'path': plugin.url_for('latestepisodes') }, { 'label': plugin.get_string(30002), 'path': plugin.url_for('programs') } ]
 
