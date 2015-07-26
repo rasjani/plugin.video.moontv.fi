@@ -66,10 +66,13 @@ def _gen_item_from_episodepage(url):
   tmp2 = _htmlify('http:' + tmp)
   sources = tmp2.findAll('source')
   for source in sources:
-    #TODO: there seems to be multiple file containers with same bitrate,
-    # prefer mp4 if available
     try:
-      sourceList[int(source['data-res'])] = source['src']
+      pos = int(source['data-res'])
+      if pos in sourceList:
+        if not sourceList[pos].endsWith('mp4'):
+          sourceList[pos] = source['src']
+      else:
+        sourceList[pos] = source['src']
     except:
       pass
 
