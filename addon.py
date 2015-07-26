@@ -61,20 +61,25 @@ def _gen_item_from_episodepage(url):
   episode_image = programhtml.find('meta', { 'property':'og:image'})['content']
   episode_title = programhtml.find('meta', { 'property':'og:title'})['content'].replace(" &raquo;",":")
   episode_plot = programhtml.find('div', { 'class': 'span8'}).p.renderContents()
+  sources = None
+  try:
+    tmp = programhtml.find('iframe')['src']
+    tmp2 = _htmlify('http:' + tmp)
+    sources = tmp2.findAll('source')
+  except:
+    pass
 
-  tmp = programhtml.find('iframe')['src']
-  tmp2 = _htmlify('http:' + tmp)
-  sources = tmp2.findAll('source')
-  for source in sources:
-    try:
-      pos = int(source['data-res'])
-      if pos in sourceList:
-        if not sourceList[pos].endsWith('mp4'):
+  if sources != None:
+    for source in sources:
+      try:
+        pos = int(source['data-res'])
+        if pos in sourceList:
+          if not sourceList[pos].endsWith('mp4'):
+            sourceList[pos] = source['src']
+        else:
           sourceList[pos] = source['src']
-      else:
-        sourceList[pos] = source['src']
-    except:
-      pass
+      except:
+        pass
 
   if len(sourceList.items())>0:
     maxRes = max(sourceList.keys())
