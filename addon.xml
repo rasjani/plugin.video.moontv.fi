@@ -10,6 +10,11 @@
   </extension>
   <extension point="xbmc.addon.metadata">
     <platform>all</platform>
+    <license>GNU GENERAL PUBLIC LICENSE. Version 3, 29 June 2007</license>
+    <forum>http://forum.kodi.tv/showthread.php?tid=142722</forum>
+    <website></website>
+    <email></email>
+    <source>https://github.com/rasjani/plugin.video.moontv.fi</source>
     <language>fi</language>
     <summary>Finnish Net-TV Channel MoonTV</summary>
     <description>Finnish Net-TV Channel MoonTV</description>
